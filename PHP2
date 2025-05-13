@@ -1,0 +1,49 @@
+<html>
+<head></head>
+<body></body>
+
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "evidence";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+$nazev = $_POST["nazev"];
+$rok_vydani = $_POST["rok_vydani"];
+$vydavatelstvi = $_POST["vydavatelstvi"];
+
+$sql = "SELECT idv FROM vydavatelstvi WHERE jmeno = '$vydavatelstvi'";
+$result = $conn->query($sql);
+$vydavatelstvi = $result->fetch_assoc()["idv"];
+
+/* $sql = "SELECT jmeno, zeme, nazev, rok_vydani FROM vydavatelstvi INNER JOIN deskove_hry ON vydavatelstvi.idv = deskove_hry.idv";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+  // output data of each row
+  while($row = $result->fetch_assoc()) {
+    echo " - Jméno: " . $row["jmeno"]. " Země " . $row["zeme"]. " Název hry " . $row["nazev"] . " - Rok vydání: " . $row["rok_vydani"]. "<br>";
+  }
+} else {
+  echo "0 results";
+}*/
+
+$sql = "INSERT INTO deskove_hry (nazev, rok_vydani, idv) VALUES ('$nazev', '$rok_vydani', '$vydavatelstvi')";
+if ($conn->query($sql) === TRUE) {
+  echo "Nový záznam byl úspěšně přidán do tabulky deskove_hry.";
+} else {
+  echo "Chyba: " . $sql . "<br>" . $conn->error;
+}
+$conn->close();
+?>
+
+<input type="submit" value="BACK" <a href="#" onclick="history.back();">
+
+</body>
+</html> 
